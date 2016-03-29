@@ -16,4 +16,3 @@ Il vous faut un :
 - SAM installé et configuré dans un répertoire de votre serveur web, 
 - les droits d'exécution sur le script RadioEmission
 - les droits d'écriture sur le répertoire web pour les fichiers de conf
-- 
