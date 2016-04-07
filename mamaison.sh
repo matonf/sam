@@ -5,6 +5,8 @@
 #Toutes question sur le blog ou par mail, possibilité de m envoyer des bières via le blog
 
 MAILTO=""
+FIC_CONF="/var/www/sam/mamaison.conf"
+FIC_SOLEIL="/var/www/sam/levers_couchers.conf"
 
 function impulser()
 {
@@ -37,17 +39,17 @@ function impulser_on()
 
 #LECTURE DES HORAIRES DE MA MAISON
 #extraction des horaires des volets
-OUVERTURE=`head -n 1 mamaison.conf|tail -n 1|cut -d'=' -f2`
-FERMETURE=`head -n 2 mamaison.conf|tail -n 1|cut -d'=' -f2`
+OUVERTURE=`head -n 1 $FIC_CONF|tail -n 1|cut -d'=' -f2`
+FERMETURE=`head -n 2 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 #extraction des horaires des lampes
-ALLUMAGE=`head -n 3 mamaison.conf|tail -n 1|cut -d'=' -f2`
-EXTINCTION=`head -n 4 mamaison.conf|tail -n 1|cut -d'=' -f2`
+ALLUMAGE=`head -n 3 $FIC_CONF|tail -n 1|cut -d'=' -f2`
+EXTINCTION=`head -n 4 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 #jour d'exécution
-JOUR_EXEC=`head -n 5 mamaison.conf|tail -n 1|cut -d'=' -f2`
+JOUR_EXEC=`head -n 5 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 #identifiants des volets
-LISTE_VOLETS=`head -n 7 mamaison.conf|tail -n 1|cut -d'=' -f2`
+LISTE_VOLETS=`head -n 7 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 #identifiants des lampes
-LISTE_LAMPES=`head -n 8 mamaison.conf|tail -n 1|cut -d'=' -f2`
+LISTE_LAMPES=`head -n 8 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 
 #LECTURE DES HORAIRES SOLAIRES SI BESOIN
 if [ $OUVERTURE = "auto" ] || [ $FERMETURE = "auto" ] || [ $ALLUMAGE = "auto" ] || [ $EXTINCTION = "auto" ]
@@ -56,7 +58,7 @@ then
 	#jour de l'année
 	JOUR=`date +'%j'`
 	#extraction des horaires 
-	LIGNE=`head -n $JOUR levers_couchers.conf|tail -n 1`
+	LIGNE=`head -n $JOUR $FIC_SOLEIL|tail -n 1`
 	#lever
 	HEUREl=`echo $LIGNE|cut -b 3,4`
 	MINUTEl=`echo $LIGNE|cut -b 6,7`
@@ -129,5 +131,4 @@ then
 		impulser_off $LISTE_LAMPES
 	fi
 fi
-
 
