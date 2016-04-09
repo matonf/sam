@@ -7,18 +7,18 @@
 MAILTO=""
 FIC_CONF="/var/www/sam/mamaison.conf"
 FIC_SOLEIL="/var/www/sam/levers_couchers.conf"
+FIC_RADIO="/var/www/sam/radioEmission"
+DEBUG=0
 
-function impulser()
-{
+function impulser() {
 	#Numéro WiringPi du pin raspberry branché a l'émetteur radio
 	PIN=0
 	#Code télécommande du raspberry (ne doit pas excéder les 2^26)
-	PI=555	
-	return "./radioEmission $PIN $PI $2 $1"
+	PI=555
+	t=`sudo $FIC_RADIO $PIN $PI $2 $1`
 }
 
-function impulser_off()
-{
+function impulser_off() {
 	#pour chacun des élements passés en paramètre
 	for param in "$@"
 	do
@@ -27,8 +27,7 @@ function impulser_off()
 	done
 }
 
-function impulser_on()
-{
+function impulser_on() {
 	#pour chacun des élements passés en paramètre
 	for param in "$@"
 	do
@@ -44,7 +43,7 @@ FERMETURE=`head -n 2 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 #extraction des horaires des lampes
 ALLUMAGE=`head -n 3 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 EXTINCTION=`head -n 4 $FIC_CONF|tail -n 1|cut -d'=' -f2`
-#jour d'exécution
+#jours programmés
 JOUR_EXEC=`head -n 5 $FIC_CONF|tail -n 1|cut -d'=' -f2`
 #identifiants des volets
 LISTE_VOLETS=`head -n 7 $FIC_CONF|tail -n 1|cut -d'=' -f2`
@@ -65,7 +64,7 @@ then
 	#coucher
 	HEUREc=`echo $LIGNE|cut -b 12,13`
 	MINUTEc=`echo $LIGNE|cut -b 15,16`
-fi 
+fi
 
 #AFFECTATION DES HORAIRES PERSONNALISES
 #volets
@@ -97,7 +96,16 @@ EXTINCTION="$HEUREl:$MINUTEl"
 else
 EXTINCTION="$EXTINCTION:00"
 fi
-# FIN D'AFFECTATION
+#FIN D'AFFECTATION
+
+#un peu de biscuits...
+if [ $DEBUG -gt 0 ]
+then
+	echo "Les volets sont $LISTE_VOLETS - Ouverture : $OUVERTURE - Fermeture : $FERMETURE"
+	echo "Les lampes sont $LISTE_LAMPES - Allumage : $ALLUMAGE - Extinction : $EXTINCTION"
+	echo "Les jours programmés sont : $JOUR_EXEC"
+	echo "Lever solaire : $HEUREl:$MINUTEl - Coucher solaire : $HEUREc:$MINUTEc"
+fi
 
 #PREPARATION DES VARIABLES 
 #heure courante : 14h45
@@ -108,6 +116,7 @@ TROUVE=`expr index $JOUR_EXEC $CE_JOUR`
 #EXECUTION SI LE JOUR ET l'HEURE SONT LES BONS
 if [ $TROUVE -gt 0 ]
 then
+	#Nous sommes un jour programmé
 	#volets : ouverture
 	if [ $OUVERTURE = $HEURE ]
 	then 
@@ -132,3 +141,4 @@ then
 	fi
 fi
 
+exit 0

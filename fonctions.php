@@ -86,7 +86,7 @@ function creer_liste($nom, $min, $max, $val_utilisateur)
 //ouvrir et fermer un objet
 function activer($objet, $etat)
 {
-	system('./radioEmission ' . PIN . ' ' . SENDER . ' ' . $objet . ' ' . $etat);
+	system('/var/www/sam/radioEmission ' . PIN . ' ' . SENDER . ' ' . $objet . ' ' . $etat);
 	ecrire_log("a passé à $etat l'objet $objet");
 }
 
