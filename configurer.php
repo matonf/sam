@@ -74,7 +74,7 @@ echo "Numéros des lampes :<br><input type=text name=liste_lampes value=\"" . $c
 echo "<br><b>Ma programmation</b>";
 echo "<br>La programmation s'applique :";
 //les jours
-for ($i=0; $i<=6; $i++) 
+for ($i=1; $i<=7; $i++) 
 {
 	echo "\n<br><INPUT type=\"checkbox\" name=\"jours[]\" value=\"" . $i . "\"";
 	if (strpos($conf_mamaison["jours"], "$i") !== FALSE) echo " checked";
@@ -84,7 +84,7 @@ for ($i=0; $i<=6; $i++)
 //tri associatif des villes
 ksort($villes);
 //on doit demander la ville proche de l'utilisateur
-echo "<br><br><b>Ma localisation</b><br>Choissisez la ville la plus proche de vous<br>";
+echo "<br><br><b>Ma localisation</b><br>Choisissez la ville la plus proche :<br>";
 echo "<form method=post><select name='ville'>\n";
 foreach ($villes as $clef => $valeur) echo "<option" . marquer_champs($clef, $conf_mamaison["ville"]) . ">" . $clef . "</option>\n";
 echo "</select>";

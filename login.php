@@ -21,13 +21,19 @@ if (! empty($_POST['playerlogin']) && ! empty($_POST['playerpass']))
 	//parcours des utilisateurs autorisés
 	for ($i=0; $i<count($utilisateurs); $i++)
 	{
-		//vérification du couple login/mdp
-		if ($utilisateurs[$i][0] == $_POST["playerlogin"] && $utilisateurs[$i][1] == $_POST["playerpass"]) 
+		//vérification du couple login/mdp en minuscule
+		if (strtolower($utilisateurs[$i][0]) == strtolower($_POST["playerlogin"]) && strtolower($utilisateurs[$i][1]) == strtolower($_POST["playerpass"])) 
 		{
-			// on envoie le cookie avec le mode httpOnly
-			setcookie("cookie_sam_id", $i, time()+COOKIE_EXPIRE, null, null, false, true);
-			header("Location: index.php");
-			exit();
+die($_SESSION["captcha"] ."==". $_POST["bot"]);
+			//vérification du captcha
+			if ($_SESSION["captcha"] == $_POST["bot"])
+			{
+die($_SESSION["captcha"] ."==". $_POST["bot"]);
+				// on envoie le cookie avec le mode httpOnly
+				setcookie("cookie_sam_id", $utilisateurs[$i][0], time()+COOKIE_EXPIRE, null, null, false, true);
+				header("Location: index.php");
+				exit();
+			}
 		}
 	}
 }
@@ -40,13 +46,21 @@ if (! empty($_POST['playerlogin']) && ! empty($_POST['playerpass']))
 <title>SAM m'identifie</title>
 <head>
 <body bgcolor="#f8f8f6">
-<center>
 
 <form method=post>
 Utilisateur<br><input type=text name=playerlogin><br>Mot de passe<br>
-<input type=password name=playerpass><br><br><button type=submit>Entrer</button>
+<input type=password name=playerpass>
+<br>Vérification<br> 
+<?php
+//tirage aléatoire de deux nombres
+$n1 = rand(1,9);
+$n2 = rand(1,9);
+//sauve la somme dans le contexte mémoire
+$_SESSION['captcha'] = $n1+$n2;
+echo "$n1 + $n2 = ";
+?>
+ <input type=text name=bot size=2>
+<br><br><button type=submit>Entrer</button>
 </form>
-
-</center>
 </body>
 </html>

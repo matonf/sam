@@ -75,12 +75,24 @@ else
 OUVERTURE="$OUVERTURE:00"
 fi
 
+if [ $OUVERTURE = "24:00" ] 
+then
+OUVERTURE="23:59"
+fi
+
+
 if [ $FERMETURE = "auto" ] 
 then
 FERMETURE="$HEUREc:$MINUTEc"
 else
 FERMETURE="$FERMETURE:00"
 fi
+
+if [ $FERMETURE = "24:00" ] 
+then
+FERMETURE="23:59"
+fi
+
 
 #lampes : gestion inversée
 if [ $ALLUMAGE = "auto" ]
@@ -90,11 +102,22 @@ else
 ALLUMAGE="$ALLUMAGE:00"
 fi
 
+if [ $ALLUMAGE = "24:00" ] 
+then
+ALLUMAGE="23:59"
+fi
+
 if [ $EXTINCTION = "auto" ]
 then
 EXTINCTION="$HEUREl:$MINUTEl"
 else
 EXTINCTION="$EXTINCTION:00"
+fi
+
+
+if [ $EXTINCTION = "24:00" ] 
+then
+EXTINCTION="23:59"
 fi
 #FIN D'AFFECTATION
 

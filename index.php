@@ -4,13 +4,20 @@
 <title>SAM pilote ma maison</title>
 <head>
 <body bgcolor="#f8f8f6">
-<center>
-<a href="?etat=on"><img src="i/volets_on.png" title="Ouvrir les volets"></a>
+<!-- volets -->
+VOLETS  
+<a href="?etat=on&item=volets">Ouvrir</a>
+ 
+<a href="?etat=off&item=volets">Fermer</a>
 <br>
-<a href="?etat=off"><img src="i/volets_off.png" title="Fermer les volets"></a>
+<!-- lampes -->
+LAMPES 
+<a href="?etat=on&item=lampes">Allumer</a>
+ 
+<a href="?etat=off&item=lampes">Eteindre</a>
 <br>
-<a href="configurer.php"><img src="i/configurer.png" title="Programmer ma maison"></a>
-</center>
+<!-- configurer -->
+<a href="configurer.php">Configurer</a>
 </body>
 </html>
 <?php
@@ -24,8 +31,20 @@ if ($_GET)
 {
 	//charge la conf de l'utilisateur
 	$conf_mamaison = charger_conf();
-	$liste_volets = explode(" ", $conf_mamaison["liste_volets"]);
-	//activation des volets en mode manuel : "on" pour les ouvrir et "off" pour les fermer
-	for ($i=0; $i<count($liste_volets); $i++) activer($liste_volets[$i], $_GET['etat']);
+	//selon l'item
+	switch ($_GET["item"])
+	{
+		case "volets" :	
+		$liste_volets = explode(" ", $conf_mamaison["liste_volets"]);
+		//activation des volets en mode manuel : "on" pour les ouvrir et "off" pour les fermer
+		for ($i=0; $i<count($liste_volets); $i++) activer($liste_volets[$i], $_GET['etat']);
+		break;
+
+		case "lampes" :
+		$liste_lampes = explode(" ", $conf_mamaison["liste_lampes"]);
+		//activation des lampes en mode manuel : "on" pour les ouvrir et "off" pour les fermer
+		for ($i=0; $i<count($liste_lampes); $i++) activer($liste_lampes[$i], $_GET['etat']);
+		break;
+	}
 }
 ?>

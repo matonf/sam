@@ -5,6 +5,8 @@ Licence : CC by sa
 Toutes question sur le blog ou par mail, possibilité de m'envoyer des bières via le blog
 */
 //CONSTANTES
+//sécuriser l'accès par login
+define('SECURISER', true);
 //Numéro WiringPi du pin raspberry branché a l'emetteur radio
 define('PIN', 0);
 //Code télécommande du raspberry (ne dois pas exceder les 2^26)
@@ -18,7 +20,7 @@ $villes = [ "Lille" => [ 50.6329700, 3.0585800 ] , "Rouen" => [ 49.4431300, 1.09
 // RETENTION DU COOKIE : 1 an
 define('COOKIE_EXPIRE', 365*24*3600);
 //faut-il loguer
-define('LOG', false);
+define('LOG', true);
 //fichier de log
 define('HISTO', 'historique.log');
 //version du logiciel

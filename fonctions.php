@@ -6,10 +6,12 @@ Toutes question sur le blog ou par mail, possibilité de m'envoyer des bières v
 */
 
 //SECURITE 
-//contrôle des accès : en extérieur on doit s'authentifier
-//if ($_SERVER['REMOTE_ADDR'] != "127.0.0.1" && substr($_SERVER['REMOTE_ADDR'],0,10) != "192.168.0.") 
-//si pas, de cookie, déposé, c'est qu'on est nouveau ici !
-if (! isset($_COOKIE["cookie_sam_id"])) 
+//contrôle des accès : selon le fichier constantes.php
+//on charge des constantes
+require_once("constantes.php");
+
+//si pas de cookie déposé, c'est qu'on est nouveau ici !
+if (! isset($_COOKIE["cookie_sam_id"]) && SECURISER == true) 
 {
 	header("Location: login.php");
 	exit();
@@ -22,17 +24,17 @@ foreach ($_REQUEST as $key => $val)
 	$_REQUEST[$key] = $val;
 }
  
-//on charge des constantes
-require_once("constantes.php");
 ecrire_log("a visité la page ". basename($_SERVER['PHP_SELF']));
 
+
 //FONCTIONS
+
 //jour de la semaine, une fonction d'une complexité absolue
 function jour($numjour)
 {
 	switch ($numjour)
 	{
-		case 0 : return "dimanche"; break;
+		case 7 : return "dimanche"; break;
 		case 1 : return "lundi"; break;
 		case 2 : return "mardi"; break;
 		case 3 : return "mercredi"; break;
@@ -48,7 +50,7 @@ function ecrire_log($texte)
 	if (LOG === false) return false;
 	//écriture de la conf personnelle
 	$pointeur_log = fopen(HISTO, "a");
-	fwrite($pointeur_log, "Le " . date("d/m/Y à H:i") . ", l'utilisateur " . $_COOKIE["cookie_sam_id"] . " (" . $_SERVER['REMOTE_ADDR']. ") " . $texte . "\n");
+	fwrite($pointeur_log, "Le " . date("d/m/Y à H:i") . ", " . $_COOKIE["cookie_sam_id"] . " " . $texte . "\n");
 	fclose($pointeur_log);
 }
 
@@ -78,6 +80,9 @@ function creer_liste($nom, $min, $max, $val_utilisateur)
 	//heures fixes
 	echo "<option" . marquer_champs("auto", $val_utilisateur)  . ">$com_le_soleil</option>\n";
 	for ($i=$min; $i<=$max; $i++) echo "<option" . marquer_champs($i, $val_utilisateur) . ">" .$i . "h00</option>\n";
+	//option minuit
+	echo "<option" . marquer_champs("24", $val_utilisateur)  . ">Minuit</option>\n";
+
 	//possiblité de ne pas utiliser l'élément ou le groupe d'éléments
 	echo "<option" . marquer_champs("25", $val_utilisateur)  . ">Ne rien faire</option>\n";
 	echo "</select><br>\n";
@@ -86,7 +91,8 @@ function creer_liste($nom, $min, $max, $val_utilisateur)
 //ouvrir et fermer un objet
 function activer($objet, $etat)
 {
-	system('/var/www/sam/radioEmission ' . PIN . ' ' . SENDER . ' ' . $objet . ' ' . $etat);
+	$commande = './radioEmission ' . PIN . ' ' . SENDER . ' ' . $objet . ' ' . $etat;
+	system($commande);
 	ecrire_log("a passé à $etat l'objet $objet");
 }
 
