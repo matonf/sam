@@ -80,8 +80,8 @@ function creer_liste($nom, $min, $max, $val_utilisateur)
 	//heures fixes
 	echo "<option" . marquer_champs("auto", $val_utilisateur)  . ">$com_le_soleil</option>\n";
 	for ($i=$min; $i<=$max; $i++) echo "<option" . marquer_champs($i, $val_utilisateur) . ">" .$i . "h00</option>\n";
-	//option minuit
-	echo "<option" . marquer_champs("24", $val_utilisateur)  . ">Minuit</option>\n";
+	//option minuit sauf pour ouvrir les volets
+	if ($nom != "Ouverture") echo "<option" . marquer_champs("24", $val_utilisateur)  . ">Minuit</option>\n";
 
 	//possiblité de ne pas utiliser l'élément ou le groupe d'éléments
 	echo "<option" . marquer_champs("25", $val_utilisateur)  . ">Ne rien faire</option>\n";

@@ -4,6 +4,7 @@ Par Matthieu ONFRAY (http://www.onfray.info)
 Licence : CC by sa
 Toutes question sur le blog ou par mail, possibilité de m'envoyer des bières via le blog
 */
+$r=session_start() or die($r);
 require_once("constantes.php");
 require_once("id.php");
 
@@ -24,11 +25,10 @@ if (! empty($_POST['playerlogin']) && ! empty($_POST['playerpass']))
 		//vérification du couple login/mdp en minuscule
 		if (strtolower($utilisateurs[$i][0]) == strtolower($_POST["playerlogin"]) && strtolower($utilisateurs[$i][1]) == strtolower($_POST["playerpass"])) 
 		{
-die($_SESSION["captcha"] ."==". $_POST["bot"]);
+
 			//vérification du captcha
 			if ($_SESSION["captcha"] == $_POST["bot"])
 			{
-die($_SESSION["captcha"] ."==". $_POST["bot"]);
 				// on envoie le cookie avec le mode httpOnly
 				setcookie("cookie_sam_id", $utilisateurs[$i][0], time()+COOKIE_EXPIRE, null, null, false, true);
 				header("Location: index.php");

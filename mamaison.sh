@@ -75,11 +75,6 @@ else
 OUVERTURE="$OUVERTURE:00"
 fi
 
-if [ $OUVERTURE = "24:00" ] 
-then
-OUVERTURE="23:59"
-fi
-
 
 if [ $FERMETURE = "auto" ] 
 then
