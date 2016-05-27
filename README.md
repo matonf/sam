@@ -16,7 +16,7 @@ SAM pour Système Autonome de Maison est un projet d'amusement open-source combi
 2) Installation
 Déposer le dossier sam dans votre /var/www
 Donner les droits d'éxécution sur radioEmission (sudo chown root:www-data /var/www/hcc/radioEmission
-puis un sudo chmod 4777 radioEmission) sinon l'interface web ne fonctionnera pas
+puis un sudo chmod 4777 radioEmission) sinon l'interface web ne fonctionnera pas !
 Donner les droits d'éxécution sur ma_maison.sh à votre utilisateur de seveur web (www-data souvent)
 Ajouter dans la crontab l'utilisation de ma_maison.sh chaque minute pour un utilisateur du système (www-data)
 
